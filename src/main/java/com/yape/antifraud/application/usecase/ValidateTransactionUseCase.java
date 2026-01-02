@@ -9,19 +9,27 @@ import java.math.BigDecimal;
 
 public class ValidateTransactionUseCase {
 
-    //se puede realizar configurable por variable de entorno
-    private static final BigDecimal LIMIT = new BigDecimal("1000");
+    private final BigDecimal limit;
     private final TransactionStatusPublisherPort publisher;
 
-    public ValidateTransactionUseCase(TransactionStatusPublisherPort publisher) {
+    public ValidateTransactionUseCase(
+            BigDecimal limit,
+            TransactionStatusPublisherPort publisher
+    ) {
+        this.limit = limit;
         this.publisher = publisher;
     }
 
     public void validate(TransactionCreatedEvent event) {
-        TransactionStatus status = event.value().compareTo(LIMIT) > 0
+        TransactionStatus status = event.value().compareTo(limit) > 0
                 ? TransactionStatus.REJECTED
                 : TransactionStatus.APPROVED;
 
-        publisher.publish(new TransactionStatusUpdatedEvent(event.transactionExternalId(), status));
+        publisher.publish(
+                new TransactionStatusUpdatedEvent(
+                        event.transactionExternalId(),
+                        status
+                )
+        );
     }
 }
