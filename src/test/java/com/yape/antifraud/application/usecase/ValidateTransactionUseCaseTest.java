@@ -18,8 +18,9 @@ class ValidateTransactionUseCaseTest {
     @Test
     void validate_whenValueIsLessOrEqualThanLimit_shouldPublishApproved() {
         // given
+        BigDecimal limit = new BigDecimal("1000");
         TransactionStatusPublisherPort publisher = mock(TransactionStatusPublisherPort.class);
-        ValidateTransactionUseCase useCase = new ValidateTransactionUseCase(publisher);
+        ValidateTransactionUseCase useCase = new ValidateTransactionUseCase(limit,publisher);
 
         UUID txId = UUID.randomUUID();
         TransactionCreatedEvent event = new TransactionCreatedEvent(
@@ -27,7 +28,7 @@ class ValidateTransactionUseCaseTest {
                 UUID.randomUUID(),
                 UUID.randomUUID(),
                 1,
-                new BigDecimal("1000")
+                limit
         );
 
         // when
@@ -47,8 +48,9 @@ class ValidateTransactionUseCaseTest {
     @Test
     void validate_whenValueIsGreaterThanLimit_shouldPublishRejected() {
         // given
+        BigDecimal limit = new BigDecimal("1000");
         TransactionStatusPublisherPort publisher = mock(TransactionStatusPublisherPort.class);
-        ValidateTransactionUseCase useCase = new ValidateTransactionUseCase(publisher);
+        ValidateTransactionUseCase useCase = new ValidateTransactionUseCase(limit, publisher);
 
         UUID txId = UUID.randomUUID();
         TransactionCreatedEvent event = new TransactionCreatedEvent(
@@ -56,7 +58,7 @@ class ValidateTransactionUseCaseTest {
                 UUID.randomUUID(),
                 UUID.randomUUID(),
                 1,
-                new BigDecimal("1000.01")
+                limit
         );
 
         // when
