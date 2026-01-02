@@ -1,6 +1,5 @@
 package com.yape.antifraud.application.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.math.BigDecimal;
@@ -13,4 +12,5 @@ public record TransactionCreatedEvent(
         UUID accountExternalIdCredit,
         int tranferTypeId,
         BigDecimal value
-) {}
+) {
+}
