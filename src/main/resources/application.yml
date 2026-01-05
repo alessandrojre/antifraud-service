@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+spring:
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+antifraud:
+  transaction:
+    limit: ${ANTIFRAUD_LIMIT:1000}
+  topics:
+    created: ${TOPIC_CREATED:transaction.created}
+    status-updated: ${TOPIC_UPDATED:transaction.status.updated}
+
+logging:
+  level:
+    com.yape.antifraud.infrastructure.inbound.kafka.TransactionCreatedConsumer: OFF
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
